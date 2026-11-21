@@ -13,8 +13,10 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Ecommerce example')
-    .setDescription('The Ecommerce API description')
+    .addBearerAuth()
+    .addSecurityRequirements('bearer')
+    .setTitle('E-Commerce example')
+    .setDescription('The E-Commerce API description')
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

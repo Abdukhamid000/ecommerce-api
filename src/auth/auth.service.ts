@@ -22,6 +22,7 @@ export class AuthService {
       token: await this.jwtService.signAsync({
         sub: user.id,
         email: user.email,
+        role: user.role,
       }),
     };
   }
@@ -47,6 +48,7 @@ export class AuthService {
       token: await this.jwtService.signAsync({
         sub: user.id,
         email: user.email,
+        role: user.role,
       }),
     };
   }

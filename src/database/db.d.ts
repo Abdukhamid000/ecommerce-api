@@ -11,6 +11,8 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export type Numeric = ColumnType<string, number | string, number | string>;
 
+export type Role = "admin" | "user";
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface CartItems {
@@ -43,6 +45,7 @@ export interface Users {
   id: Generated<number>;
   name: string;
   password: string;
+  role: Generated<Role>;
   updated_at: Generated<Timestamp | null>;
 }
 
