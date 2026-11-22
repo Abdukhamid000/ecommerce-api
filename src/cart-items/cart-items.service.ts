@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Kysely } from 'kysely';
 import { KYSELY_DB } from '../database/database.module.js';
 import { DB } from '../database/db.js';
@@ -34,7 +34,7 @@ export class CartItemsService {
       .where('ci.user_id', '=', userId)
       .select([
         'ci.id',
-        'p.id',
+        'ci.product_id',
         'p.name',
         'p.description',
         'p.image_urls',
@@ -42,5 +42,18 @@ export class CartItemsService {
         'ci.quantity',
       ])
       .execute();
+  }
+
+  async deleteById(id: number, userId: number) {
+    const res = await this.db
+      .deleteFrom('cart_items')
+      .where('cart_items.id', '=', id)
+      .where('cart_items.user_id', '=', userId)
+      .returningAll()
+      .executeTakeFirst();
+
+    if (!res) {
+      throw new NotFoundException('cart item not found');
+    }
   }
 }

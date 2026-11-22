@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { RolesGuard } from '../common/guards/roles.guard.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
+import { FindProductsQuery } from './dto/find-products.query.dto.js';
 import { ProductsService } from './products.service.js';
 
 @UseGuards(RolesGuard)
@@ -9,7 +10,7 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  findAll(@Query('search') search?: string) {
+  findAll(@Query() { search }: FindProductsQuery) {
     return this.productsService.findAll(search);
   }
 
