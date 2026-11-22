@@ -8,8 +8,15 @@ import { CreateProductDto } from './dto/create-product.dto.js';
 export class ProductsService {
   constructor(@Inject(KYSELY_DB) private readonly db: Kysely<DB>) {}
 
-  async findAll() {
-    return this.db.selectFrom('products').selectAll().execute();
+  async findAll(search?: string) {
+    return this.db
+      .selectFrom('products')
+      .selectAll()
+      .$if(Boolean(search), (qb) =>
+        qb.where('products.name', 'ilike', `%${search}%`),
+      )
+      .orderBy('created_at', 'desc')
+      .execute();
   }
 
   async findOneById(id: number) {
