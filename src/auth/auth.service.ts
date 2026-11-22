@@ -5,9 +5,16 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
+import { Role } from '../database/db.js';
 import { CreateUserDto } from '../users/dto/create-user.dto.js';
 import { UsersService } from '../users/users.service.js';
 import { LoginDto } from './dto/login.dto.js';
+
+export interface JwtPayload {
+  sub: number;
+  email: string;
+  role: Role;
+}
 
 @Injectable()
 export class AuthService {

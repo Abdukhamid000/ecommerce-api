@@ -1,7 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Kysely } from 'kysely';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Kysely, NoResultError } from 'kysely';
 import { KYSELY_DB } from '../database/database.module.js';
 import { DB } from '../database/db.js';
+import { CreateProductDto } from './dto/create-product.dto.js';
 
 @Injectable()
 export class ProductsService {
@@ -9,5 +10,28 @@ export class ProductsService {
 
   async findAll() {
     return this.db.selectFrom('products').selectAll().execute();
+  }
+
+  async findOneById(id: number) {
+    try {
+      return await this.db
+        .selectFrom('products')
+        .selectAll()
+        .where('id', '=', id)
+        .executeTakeFirstOrThrow();
+    } catch (e) {
+      if (e instanceof NoResultError) {
+        throw new NotFoundException('product not found');
+      }
+      throw e;
+    }
+  }
+
+  create(dto: CreateProductDto) {
+    return this.db
+      .insertInto('products')
+      .values(dto)
+      .returningAll()
+      .executeTakeFirstOrThrow();
   }
 }
