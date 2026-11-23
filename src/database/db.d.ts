@@ -11,6 +11,10 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export type Numeric = ColumnType<string, number | string, number | string>;
 
+export type OrderStatus = "cancelled" | "delivered" | "paid" | "pending" | "shipped";
+
+export type PaymentStatus = "failed" | "pending" | "success";
+
 export type Role = "admin" | "user";
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
@@ -20,6 +24,39 @@ export interface CartItems {
   product_id: number;
   quantity: Generated<number>;
   user_id: number;
+}
+
+export interface OrderItems {
+  id: Generated<number>;
+  order_id: number;
+  product_id: number;
+  product_name: string;
+  quantity: number;
+  unit_price: Numeric;
+}
+
+export interface Orders {
+  created_at: Generated<Timestamp | null>;
+  id: Generated<number>;
+  phone: string;
+  shipment_city: string;
+  shipment_postal_code: string;
+  shipment_street: string;
+  status: Generated<OrderStatus>;
+  total_amount: Numeric;
+  updated_at: Generated<Timestamp | null>;
+  user_id: number;
+}
+
+export interface Payments {
+  amount: Numeric;
+  created_at: Generated<Timestamp | null>;
+  id: Generated<number>;
+  order_id: number;
+  payment_status: Generated<PaymentStatus | null>;
+  provider: string;
+  provider_id: string;
+  updated_at: Generated<Timestamp | null>;
 }
 
 export interface Pgmigrations {
@@ -51,6 +88,9 @@ export interface Users {
 
 export interface DB {
   cart_items: CartItems;
+  "order-items": OrderItems;
+  orders: Orders;
+  payments: Payments;
   pgmigrations: Pgmigrations;
   products: Products;
   users: Users;

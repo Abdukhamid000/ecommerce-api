@@ -7,6 +7,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard.js';
 import { DatabaseModule } from './database/database.module.js';
 import { ProductsModule } from './products/products.module.js';
 import { UsersModule } from './users/users.module.js';
+import { OrdersModule } from './orders/orders.module.js';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from './users/users.module.js';
     AuthModule,
     UsersModule,
     CartItemsModule,
+    OrdersModule,
   ],
   providers: [
     {
