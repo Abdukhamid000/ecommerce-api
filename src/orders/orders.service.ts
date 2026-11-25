@@ -8,6 +8,7 @@ import { Kysely } from 'kysely';
 import { CartItemsService } from '../cart-items/cart-items.service.js';
 import { KYSELY_DB } from '../database/database.module.js';
 import { DB } from '../database/db.js';
+import { PaymentsService } from '../payments/payments.service.js';
 import { CreateOrderDto } from './dto/create-order.dto.js';
 
 @Injectable()
@@ -15,6 +16,7 @@ export class OrdersService {
   constructor(
     @Inject(KYSELY_DB) private readonly db: Kysely<DB>,
     private cartItemsService: CartItemsService,
+    private paymentsService: PaymentsService,
   ) {}
 
   async checkout(userId: number, dto: CreateOrderDto) {
@@ -73,6 +75,11 @@ export class OrdersService {
       return order;
     });
 
-    return newOrder;
+    const intent = this.paymentsService.createIntent({
+      amountCents: totalAmountInt,
+      orderId: newOrder.id,
+    });
+
+    return intent;
   }
 }

@@ -8,6 +8,8 @@ import { DatabaseModule } from './database/database.module.js';
 import { ProductsModule } from './products/products.module.js';
 import { UsersModule } from './users/users.module.js';
 import { OrdersModule } from './orders/orders.module.js';
+import { PaymentsModule } from './payments/payments.module.js';
+import { WebhookModule } from './webhook/webhook.module.js';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { OrdersModule } from './orders/orders.module.js';
     UsersModule,
     CartItemsModule,
     OrdersModule,
+    PaymentsModule,
+    WebhookModule,
   ],
   providers: [
     {
